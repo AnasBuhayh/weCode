@@ -12,6 +12,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+
+env = environ.Env(
+    DB_NAME=(str, 'blog_db'),
+    DB_USER=(str, 'postgres'),
+    DB_PASSWORD=(str, 'admin'),
+    DB_HOST=(str, 'localhost'),
+    DB_PORT=(int, 5432)
+)
+environ.Env.read_env()
 
 # This code checks if you have the SECRET.py file to connect to the live server.
 # For more info email anas.buhayh@gmail.com
@@ -25,11 +35,7 @@ if(DB_LIVE):
         from .SECRET import *
 else:
     print("Local Database")
-    NAME = 'blog_db'
-    USER = 'postgres'
-    PASSWORD = 'admin'
-    HOST = 'localhost'
-    PORT = '5432'
+    
 
 
 
@@ -106,11 +112,11 @@ WSGI_APPLICATION = 'weCode.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': HOST,
-        'PORT': PORT,
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 
 }
